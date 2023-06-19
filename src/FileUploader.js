@@ -1,27 +1,28 @@
-import { React, useEffect, Fragment, useRef } from "react";
+import { React, useState, useEffect, Fragment, useRef } from "react";
 import * as bootstrap from "bootstrap";
+import ChatLoader from "./ChatLoader";
 
 const FileUploader = () => {
+  const [lines, setLines] = useState([]);
+
   const fileInput = useRef(null);
   const handleButtonClick = (e) => {
     fileInput.current.click();
   };
   const handleChange = (e) => {
-    console.log(e.target.files[0]);
+    //console.log(e.target.files[0]);
     const file = e.target.files[0];
     const fileReader = new FileReader();
     fileReader.onload = () => {
       const dump = fileReader.result;
-      //console.log(dump);
-      const lines = dump.split(/\r?\n/);
-      console.log(lines);
+      setLines(dump.split('\r\n'));
     };
     fileReader.readAsText(file);
   };
 
   useEffect(() => {
-    const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
-    const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+    const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+    const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
   })
   
   return (
@@ -38,7 +39,9 @@ const FileUploader = () => {
             style={{ display: "none" }}
           />
         </Fragment>
-        <br /><br /><br /><button type="button" class="btn btn-danger" data-bs-toggle="popover" data-bs-title="Popover title" data-bs-content="And here's some amazing content. It's very engaging. Right?">Click to toggle popover</button>
+        <br /><br /><br /> <button type="button" class="btn btn-danger" data-bs-toggle="popover" data-bs-title="Popover title" data-bs-content="And here's some amazing content. It's very engaging. Right?">Click to toggle popover</button>
+        <br /><br /><br /> 
+        <ChatLoader lines={lines}/>
       </div>
     </div>
       </>
