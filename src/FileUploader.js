@@ -3,19 +3,20 @@ import * as bootstrap from "bootstrap";
 import ChatLoader from "./ChatLoader";
 
 const FileUploader = () => {
-  const [lines, setLines] = useState([]);
+  const [dump, setDump] = useState("");
+  const [ext, setExt] = useState("");
 
   const fileInput = useRef(null);
   const handleButtonClick = (e) => {
     fileInput.current.click();
   };
   const handleChange = (e) => {
-    //console.log(e.target.files[0]);
     const file = e.target.files[0];
+    setExt(file.name.split('.').slice(-1)[0]); // txt or json
+
     const fileReader = new FileReader();
     fileReader.onload = () => {
-      const dump = fileReader.result;
-      setLines(dump.split('\r\n'));
+      setDump(fileReader.result);
     };
     fileReader.readAsText(file);
   };
@@ -30,18 +31,18 @@ const FileUploader = () => {
       <div class="card text-center mb-3" style={{width: '18 rem'}}>
       <div class="card-body">
         <h5 class="card-title font-weight-bold">Chat Tagger (디지털포렌식 조사 지원)</h5>
-        <p class="card-text">카카오톡 또는 텔레그램 대화 내역을 txt파일로 업로드해보세요.</p>
+        <p class="card-text">카카오톡(.txt) 또는 텔레그램(.json) 대화 내역을 파일로 업로드해보세요.</p>
         <Fragment>
-          <button onClick={handleButtonClick} class="btn btn-primary" data-bs-toggle="popover" data-bs-title="파일 업로드" data-bs-content="카카오톡 또는 텔레그램 대화 내역을 txt파일로 업로드해보세요.">파일 업로드</button>
+          <br /><button onClick={handleButtonClick} class="btn btn-primary" data-bs-toggle="popover" data-bs-title="파일 업로드" data-bs-content="카카오톡(.txt), 텔레그램(.json) 업로드">1. 파일 업로드</button>
           <input type="file"
             ref={fileInput}
             onChange={handleChange}
             style={{ display: "none" }}
           />
         </Fragment>
-        <br /><br /><br /> <button type="button" class="btn btn-danger" data-bs-toggle="popover" data-bs-title="Popover title" data-bs-content="And here's some amazing content. It's very engaging. Right?">Click to toggle popover</button>
+        <br /><br /><button type="button" class="btn btn-danger" data-bs-toggle="popover" data-bs-title="대화내역 분석" data-bs-content="업로드 파일 대상 NER 태깅, 주제 분류">2. 대화내역 분석</button>
         <br /><br /><br /> 
-        <ChatLoader lines={lines}/>
+        <ChatLoader dump={dump} ext={ext}/>
       </div>
     </div>
       </>
