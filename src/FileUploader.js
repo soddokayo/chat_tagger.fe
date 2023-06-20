@@ -24,7 +24,7 @@ const FileUploader = () => {
   useEffect(() => {
     const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
     const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
-  })
+  }, [])
   
   return (
       <>
@@ -40,8 +40,7 @@ const FileUploader = () => {
             style={{ display: "none" }}
           />
         </Fragment>
-        <br /><br /><button type="button" class="btn btn-danger" data-bs-toggle="popover" data-bs-title="대화내역 분석" data-bs-content="업로드 파일 대상 NER 태깅, 주제 분류">2. 대화내역 분석</button>
-        <br /><br /><br /> 
+        <br /><br /> 
         <ChatLoader dump={dump} ext={ext}/>
       </div>
     </div>

@@ -1,21 +1,30 @@
 import { useEffect, useState, useRef } from "react";
+import TaggedLi from "./TaggedLi";
 
 const ChatLoader = (props) => {
     const [kakaotalk, setKakaotalk] = useState([]);
     const [telegram, setTelegram] = useState({});
     const chatId = useRef(0);
 
+    const handleButtonClick = (e) => {
+        console.log(telegram)
+    };
+
     useEffect(() => {
         if (props.ext === "txt") {
             setKakaotalk(props.dump.split('\r\n'));
+            setTelegram({});
             //console.log("txt", kakaotalk);
         } else if (props.ext === "json") {
             setTelegram(JSON.parse(props.dump));
+            setKakaotalk([]);
             //console.log("json", telegram);
         }
     }, [props.dump])
     return (
         <>
+        <button onClick={handleButtonClick} type="button" class="btn btn-danger" data-bs-toggle="popover" data-bs-title="대화내역 분석" data-bs-content="업로드 파일 대상 NER 태깅, 주제 분류">2. 대화내역 분석</button>
+        <br /><br /><br />
         {kakaotalk && kakaotalk.map((chat) => {
             const items_ = chat.split(' : ')
             if (chat === "") {
@@ -41,9 +50,10 @@ const ChatLoader = (props) => {
                         <ul class="list-group list-group-horizontal">
                             <li class="list-group-item py-1">{date_}</li>
                             <li class="list-group-item py-1">{from_}</li>
-                            <li class="list-group-item py-1 list-group-item-warning">{text_}</li>
+                            <TaggedLi class="list-group-item py-1" text={text_} />
                         </ul>
                     )
+                    // <TaggedLi text={text_}></TaggedLi>
                 }
             }})}
             
@@ -67,9 +77,10 @@ const ChatLoader = (props) => {
                     <ul class="list-group list-group-horizontal">
                         <li class="list-group-item py-1">{date_}</li>
                         <li class="list-group-item py-1">{from_}</li>
-                        <li class="list-group-item py-1 list-group-item-info">{text_}</li>
+                        <TaggedLi class="list-group-item py-1 list-group-item-info" text={text_} />
                     </ul>
                 )
+                // <TaggedLi text={text_}></TaggedLi>
             } else {
                 // 리스트도 필요하게 되면 추후 처리
                 // else if (typeof Array.isArray(text_)) {...}
