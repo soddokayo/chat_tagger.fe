@@ -12,13 +12,15 @@ const FileUploader = () => {
   };
   const handleChange = (e) => {
     const file = e.target.files[0];
-    setExt(file.name.split('.').slice(-1)[0]); // txt or json
+    if (file) {
+      setExt(file.name.split('.').slice(-1)[0]); // txt or json
 
-    const fileReader = new FileReader();
-    fileReader.onload = () => {
-      setDump(fileReader.result);
-    };
-    fileReader.readAsText(file);
+      const fileReader = new FileReader();
+      fileReader.onload = () => {
+        setDump(fileReader.result);
+      };
+      fileReader.readAsText(file);
+    }
   };
 
   useEffect(() => {
@@ -28,12 +30,12 @@ const FileUploader = () => {
   
   return (
       <>
-      <div class="card text-center mb-3" style={{width: '18 rem'}}>
-      <div class="card-body">
-        <h5 class="card-title font-weight-bold">Chat Tagger (디지털포렌식 조사 지원)</h5>
-        <p class="card-text">카카오톡(.txt) 또는 텔레그램(.json) 대화 내역을 파일로 업로드해보세요.</p>
+      <div className="card text-center mb-3" style={{width: '18 rem'}}>
+      <div className="card-body">
+        <h5 className="card-title font-weight-bold">Chat Tagger (디지털포렌식 조사 지원)</h5>
+        <p className="card-text">카카오톡(.txt) 또는 텔레그램(.json) 대화 내역을 파일로 업로드해보세요.</p>
         <Fragment>
-          <br /><button onClick={handleButtonClick} class="btn btn-primary" data-bs-toggle="popover" data-bs-title="파일 업로드" data-bs-content="카카오톡(.txt), 텔레그램(.json) 업로드">1. 파일 업로드</button>
+          <br /><button onClick={handleButtonClick} className="btn btn-primary" data-bs-toggle="popover" data-bs-title="파일 업로드" data-bs-content="카카오톡(.txt), 텔레그램(.json) 업로드">1. 파일 업로드</button>
           <input type="file"
             ref={fileInput}
             onChange={handleChange}
