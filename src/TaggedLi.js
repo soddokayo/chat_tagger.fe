@@ -15,11 +15,20 @@ const TaggedLi = (props) => {
         TI: "btn-primary", // TIME
         CR: "btn-danger", // CRIME
     }
+    const popup_title = {
+        DT: "날짜(Date)", // DATE
+        LC: "장소(Location)", // LOCATION
+        OG: "조직(Organization)", // ORGANIZATION
+        PS: "인물(Person)", // PERSON
+        QT: "수량(Quantity)", // QUANTITY
+        TI: "시간(Time)", // TIME
+        CR: "범죄(Crime)", // CRIME
+    }
 
     useEffect(() => {
       const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
       const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
-    }, [])
+    }, [ners])
 
     useEffect(() => {
         setText(props.text);
@@ -64,7 +73,7 @@ const TaggedLi = (props) => {
                         return (
                             <> 
                             {text.slice(0, ner.start)} 
-                            <span className={color} data-bs-toggle="popover" data-bs-title={ner.entity_group} data-bs-content={ner.word}>
+                            <span className={color} data-bs-toggle="popover" data-bs-title={popup_title[ner.entity_group]} data-bs-content={ner.word}>
                                 {text.slice(ner.start, ner.end)} 
                             </span> 
                             {text.slice(ner.end)}
